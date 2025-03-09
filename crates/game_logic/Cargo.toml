@@ -1,0 +1,13 @@
+[package]
+name = "game_logic"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = { workspace = true }
+log = { workspace = true }
+piccolo = "0.3"
+rogalik = { workspace = true }
+

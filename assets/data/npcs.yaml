@@ -1,0 +1,10 @@
+Rat:
+  sprite:
+    atlas: sprites
+    index: 423
+  components:
+    actor:
+      abilities:
+        - !Walk 1
+    movable:
+    obstacle: 

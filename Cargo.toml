@@ -1,0 +1,12 @@
+[workspace]
+members = ["crates/*"]
+workspace.resolver = "2"
+
+[workspace.dependencies]
+anyhow = "1.0"
+# rogalik = { path = "../rogalik", features = ["serialize"]}
+rogalik = { path = "../rogalik"}
+# rogalik = { git = "https://github.com/maciekglowka/rogalik" , features = ["serialize"]}
+log = "0.4"
+# rand = "0.8"
+
