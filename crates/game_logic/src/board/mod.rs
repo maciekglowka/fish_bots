@@ -7,7 +7,11 @@ mod systems;
 
 use crate::LogicState;
 
-pub fn board_init(state: &mut LogicState) {
+pub fn board_init(state: &mut LogicState, code: String) {
+    state.lua = piccolo::Lua::core();
+    crate::scripting::init(&mut state.lua, code).unwrap();
+    state.world = crate::World::default();
+    state.score = 0;
     player::player_board_init(&mut state.world);
     state.world.home = Vector2i::new(BOARD_SIZE as i32 / 2, BOARD_SIZE as i32 / 2);
 }

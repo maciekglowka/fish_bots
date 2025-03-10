@@ -5,7 +5,6 @@ mod commands;
 mod events;
 pub mod globals;
 mod scripting;
-pub mod startup;
 mod utils;
 mod world;
 

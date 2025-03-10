@@ -10,8 +10,14 @@
         width: 100%;
       }
       #rogalik-canvas {
-        width: 100%;
-        height: 100%;
+        <!-- width: 100%; -->
+        <!-- height: 100%; -->
+        width: 600px;
+        height: 600px;
+      }
+      #bot-code {
+        width: 600px;
+        height: 600px;
       }
     </style>
     <script type="module">
@@ -21,5 +27,16 @@
   </head>
   <body>
     <canvas id="rogalik-canvas" width="100" height="100"></canvas>
+    <textarea id="bot-code">
+i = 0
+function update_player ()
+    i = (i + 1) % 4
+     
+    if i == 0 then return 'down' end
+    if i == 1 then return 'left' end
+    if i == 2 then return 'up' end
+    return 'right'
+end
+</textarea>
   </body>
 </html>

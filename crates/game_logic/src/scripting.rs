@@ -1,21 +1,21 @@
 use piccolo::{Callback, Closure, Executor, Function, Lua, Value};
 
-const CODE: &str = "
-i = 0
-function update_player ()
-    i = (i + 1) % 4
-     
-    if i == 0 then return 'down' end
-    if i == 1 then return 'left' end
-    if i == 2 then return 'up' end
-    return 'right'
-end
-";
+// const CODE: &str = "
+// i = 0
+// function update_player ()
+//     i = (i + 1) % 4
 
-pub(crate) fn init(lua: &mut Lua) -> anyhow::Result<()> {
+//     if i == 0 then return 'down' end
+//     if i == 1 then return 'left' end
+//     if i == 2 then return 'up' end
+//     return 'right'
+// end
+// ";
+
+pub(crate) fn init(lua: &mut Lua, code: String) -> anyhow::Result<()> {
     let executor = lua.try_enter(|ctx| {
         let env = ctx.globals();
-        let closure = Closure::load_with_env(ctx, None, CODE.as_bytes(), env)?;
+        let closure = Closure::load_with_env(ctx, None, code.as_bytes(), env)?;
         let ex = Executor::start(ctx, closure.into(), ());
         Ok(ctx.stash(ex))
     })?;

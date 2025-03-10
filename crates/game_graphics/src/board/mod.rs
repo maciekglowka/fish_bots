@@ -1,18 +1,20 @@
-use rogalik::{events::SubscriberHandle, prelude::*};
+use rogalik::{events::SubscriberHandle, math::vectors::vector2::Vector2, prelude::*};
 
 mod player;
 mod tiles;
 
 use crate::{
     draw::{bubbles::Bubble, sprites::Sprite},
-    globals::{BLUE_COLOR, RED_COLOR},
+    globals::{BASE_TEXT_SIZE, BLUE_COLOR, GAP, RED_COLOR, UI_Z},
     input::InputState,
-    utils::tile_to_world,
+    ui::{Button, Span},
+    utils::{get_viewport_bounds, tile_to_world},
 };
 use game_logic::{LogicState, World};
 
 #[derive(Default)]
 pub struct BoardGraphics {
+    pub reload: bool,
     player_sprites: Vec<Sprite>,
     bubbles: Vec<Bubble>,
 }
@@ -34,6 +36,7 @@ pub fn board_draw(
     input_state: &InputState,
 ) -> bool {
     tiles::draw_tiles(state, logic, context);
+    draw_controls(state, input_state, context);
 
     let mut animating = false;
     animating |= player::draw_player(&logic.world, state, context);
@@ -47,6 +50,20 @@ pub fn board_draw(
     //     player::handle_player_ui(world, state, context, input_state);
     // }
     animating
+}
+
+fn draw_controls(state: &mut BoardGraphics, input_state: &InputState, context: &mut Context) {
+    let bounds = get_viewport_bounds(context);
+    let button = Button::new(
+        bounds.0 + Vector2f::splat(GAP),
+        Vector2f::new(100., 2. * BASE_TEXT_SIZE),
+        UI_Z,
+    )
+    .with_span(Span::new().with_text_borrowed("Reload"));
+    button.draw(context, input_state);
+    if button.clicked(input_state) {
+        state.reload = true;
+    }
 }
 
 fn init_sprites(state: &mut BoardGraphics, world: &World) {

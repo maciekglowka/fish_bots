@@ -6,6 +6,8 @@ use wasm_bindgen::prelude::*;
 mod assets;
 mod input;
 mod scenes;
+#[cfg(target_arch = "wasm32")]
+mod web;
 
 #[derive(Default)]
 struct GameState {
@@ -53,7 +55,6 @@ fn get_camera_center() -> Vector2f {
 
 fn get_target_resolution(context: &Context) -> (u32, u32) {
     let size = context.get_physical_size();
-    log::debug!("Context size: {:?}", size);
 
     let target_dim = game_graphics::globals::TILE_SIZE * (game_logic::globals::BOARD_SIZE as f32);
     let min_dim = size.y.min(size.x);

@@ -5,7 +5,7 @@ use crate::GameState;
 pub(crate) struct GameScene;
 impl GameScene {
     fn init_game(&mut self, game: &mut GameState) {
-        game_logic::startup::init_game(&mut game.logic_state);
+        // game_logic::startup::init_game(&mut game.logic_state);
     }
 }
 impl Scene for GameScene {

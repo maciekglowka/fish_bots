@@ -21,3 +21,4 @@ game_graphics = { path = "../game_graphics" }
 console_log = "1.0"
 getrandom = { version = "0.2", features = ["js"] }
 wasm-bindgen = "0.2"
+web-sys = { version = "0.3", features = ["Element", "HtmlTextAreaElement"]}

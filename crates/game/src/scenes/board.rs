@@ -6,11 +6,21 @@ use crate::GameState;
 pub(crate) struct Board {
     graphics_state: game_graphics::board::BoardGraphics,
 }
+impl Board {
+    #[cfg(not(target_arch = "wasm32"))]
+    fn get_code(&self) -> String {
+        String::new()
+    }
+    #[cfg(target_arch = "wasm32")]
+    fn get_code(&self) -> String {
+        crate::web::get_bot_code()
+    }
+}
 impl<'a> Scene for Board {
     type Game = GameState;
 
     fn enter(&mut self, game: &mut Self::Game, _context: &mut rogalik::engine::Context) {
-        game_logic::board::board_init(&mut game.logic_state);
+        game_logic::board::board_init(&mut game.logic_state, self.get_code());
         game_graphics::board::board_init(&mut self.graphics_state, &mut game.logic_state);
     }
     fn exit(&mut self, game: &mut Self::Game, _context: &mut rogalik::engine::Context) {
@@ -31,6 +41,10 @@ impl<'a> Scene for Board {
             &input,
         ) {
             game_logic::board::board_update(&mut game.logic_state);
+        }
+
+        if self.graphics_state.reload {
+            return Some(SceneChange::Pop);
         }
         // match self.logic_state.status {
         //     BoardStatus::Gameover => Some(SceneChange::Switch(Box::new(
