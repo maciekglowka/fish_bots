@@ -1,5 +1,6 @@
 use rogalik::{events::SubscriberHandle, math::vectors::vector2::Vector2, prelude::*};
 
+mod fish;
 mod player;
 mod tiles;
 
@@ -36,6 +37,7 @@ pub fn board_draw(
     input_state: &InputState,
 ) -> bool {
     tiles::draw_tiles(state, logic, context);
+    fish::draw_fish(logic, context);
     draw_controls(state, input_state, context);
 
     let mut animating = false;

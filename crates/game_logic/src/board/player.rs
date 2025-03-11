@@ -12,12 +12,13 @@ pub(super) fn player_board_init(world: &mut World) {
     // TEMP
     world.players.push(Player {
         v: Vector2i::new(BOARD_SIZE as i32 / 2 as i32, BOARD_SIZE as i32 / 2 - 1),
+        ..Default::default()
     })
 }
 
 pub(super) fn handle_player_turn(state: &mut crate::LogicState) {
     for idx in 0..state.world.players.len() {
-        match get_player_action(&mut state.lua, idx as u32) {
+        match get_player_action(&mut state.lua, idx as u32, &state.world) {
             Ok(action) => {
                 match command_from_str(idx, &action) {
                     Some(command) => state.command_queue.push_back(vec![command]),

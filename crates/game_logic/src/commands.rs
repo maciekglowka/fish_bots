@@ -8,9 +8,6 @@ pub trait Command: core::fmt::Debug {
     fn is_valid(&self, _world: &World) -> bool {
         true
     }
-    fn score(&self, _world: &World) -> i32 {
-        0
-    }
 }
 
 #[derive(Default)]
@@ -46,11 +43,16 @@ pub(crate) struct MovePlayerCommand {
 }
 impl Command for MovePlayerCommand {
     fn execute(&self, world: &mut World) -> Result<CommandOutput> {
-        world
-            .players
-            .get_mut(self.idx)
-            .context("Player idx out of bounds")?
-            .v += self.dir;
+        world.players[self.idx].v += self.dir;
+
+        let pick = PickFishCommand {
+            player_idx: self.idx,
+            target: world.players[self.idx].v,
+        };
+        if pick.is_valid(world) {
+            return CommandOutput::command(Box::new(pick));
+        }
+
         CommandOutput::empty()
     }
     fn is_valid(&self, world: &World) -> bool {
@@ -58,5 +60,21 @@ impl Command for MovePlayerCommand {
             return false;
         };
         is_on_board(p.v + self.dir)
+    }
+}
+
+#[derive(Debug)]
+pub(crate) struct PickFishCommand {
+    pub player_idx: usize,
+    pub target: Vector2i,
+}
+impl Command for PickFishCommand {
+    fn execute(&self, world: &mut World) -> Result<CommandOutput> {
+        let fish = world.fish.remove(&self.target).context("")?;
+        world.players[self.player_idx].loaded = Some(fish);
+        CommandOutput::empty()
+    }
+    fn is_valid(&self, world: &World) -> bool {
+        world.fish.contains_key(&self.target) && world.players.len() > self.player_idx
     }
 }

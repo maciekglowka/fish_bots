@@ -1,19 +1,23 @@
 use rogalik::prelude::*;
 
-use crate::globals::BOARD_SIZE;
+use crate::{globals::BOARD_SIZE, world::Fish, LogicState};
 
 pub(crate) mod player;
 mod systems;
 
-use crate::LogicState;
-
 pub fn board_init(state: &mut LogicState, code: String) {
-    state.lua = piccolo::Lua::core();
-    crate::scripting::init(&mut state.lua, code).unwrap();
+    state.console = Some(crate::console::Console::new());
+    state.lua = crate::scripting::init(code, state).expect("Lua initialization failed!");
     state.world = crate::World::default();
     state.score = 0;
     player::player_board_init(&mut state.world);
     state.world.home = Vector2i::new(BOARD_SIZE as i32 / 2, BOARD_SIZE as i32 / 2);
+
+    // TEMP
+    state.world.fish.insert(
+        Vector2i::new(BOARD_SIZE as i32 / 2, 1),
+        Fish { life: 20, value: 1 },
+    );
 }
 
 pub fn board_exit(state: &mut LogicState) {

@@ -1,4 +1,6 @@
-use piccolo::{Callback, Closure, Executor, Function, Lua, Value};
+use piccolo::{Callback, Closure, Executor, Function, IntoMultiValue, IntoValue, Lua, Value};
+
+use crate::{LogicState, World};
 
 // const CODE: &str = "
 // i = 0
@@ -12,7 +14,8 @@ use piccolo::{Callback, Closure, Executor, Function, Lua, Value};
 // end
 // ";
 
-pub(crate) fn init(lua: &mut Lua, code: String) -> anyhow::Result<()> {
+pub(crate) fn init(code: String, state: &LogicState) -> anyhow::Result<Lua> {
+    let mut lua = Lua::core();
     let executor = lua.try_enter(|ctx| {
         let env = ctx.globals();
         let closure = Closure::load_with_env(ctx, None, code.as_bytes(), env)?;
@@ -21,50 +24,54 @@ pub(crate) fn init(lua: &mut Lua, code: String) -> anyhow::Result<()> {
     })?;
     lua.execute::<()>(&executor)?;
 
-    // lua.enter(|ctx| {
-    //     let f = Callback::from_fn(&ctx, |ctx, _, _| {
-    //         rogalik::engine::log::debug!("DEBUG");
-    //         Ok(piccolo::CallbackReturn::Return)
-    //     });
-    //     let env = ctx.globals();
-    //     let _ = env.set_value(
-    //         &ctx,
-    //         Value::String(piccolo::String::from_static(&ctx, "debug")),
-    //         f.into(),
-    //     );
-    // });
+    insert_functions(&mut lua, state);
 
-    // for _ in 0..10 {
-    //     let executor = lua
-    //         .try_enter(|ctx| {
-    //             let env = ctx.globals();
-    //             let foo = env.get(ctx, "foo");
-    //             if let Value::Function(f) = foo {
-    //                 let ex = Executor::start(ctx, f.into(), "message");
-    //                 Ok(ctx.stash(ex))
-    //             } else {
-    //                 panic!("")
-    //             }
-    //         })
-    //         .unwrap();
-
-    //     let result = lua.execute::<i32>(&executor);
-    //     println!("{:?}", result);
-    // }
-    Ok(())
+    Ok(lua)
 }
 
-pub(crate) fn get_player_action(lua: &mut Lua, idx: u32) -> anyhow::Result<String> {
+pub(crate) fn get_player_action(lua: &mut Lua, idx: u32, world: &World) -> anyhow::Result<String> {
     let executor = lua.try_enter(|ctx| {
+        let w = world.to_lua(ctx);
         let env = ctx.globals();
         let f = env.get(ctx, "update_player");
         match f {
             Value::Function(f) => {
-                let ex = Executor::start(ctx, f.into(), idx);
+                let ex = Executor::start(ctx, f.into(), (idx + 1, w));
                 Ok(ctx.stash(ex))
             }
             v => Err(piccolo::Error::from_value(v)),
         }
     })?;
     Ok(lua.execute::<String>(&executor)?)
+}
+
+fn insert_functions(lua: &mut Lua, state: &LogicState) {
+    // debug
+    let tx = state
+        .console
+        .as_ref()
+        .expect("Console not initialized!")
+        .get_sender();
+    lua.enter(|ctx| {
+        let f = Callback::from_fn(&ctx, move |ctx, _, mut stack| {
+            let v: Value = stack.consume(ctx)?;
+            let _ = tx.send(display_value(&v));
+            Ok(piccolo::CallbackReturn::Return)
+        });
+        let env = ctx.globals();
+        let _ = env.set_value(&ctx, "debug".into_value(ctx), f.into());
+    });
+}
+
+fn display_value(value: &Value) -> String {
+    match value {
+        Value::Table(t) => format!(
+            "[{}]",
+            t.iter()
+                .map(|(k, v)| format!("{}: {}", display_value(&k), display_value(&v)))
+                .collect::<Vec<_>>()
+                .join(", ")
+        ),
+        _ => value.to_string(),
+    }
 }

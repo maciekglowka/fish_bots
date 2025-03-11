@@ -41,6 +41,9 @@ impl<'a> Scene for Board {
             &input,
         ) {
             game_logic::board::board_update(&mut game.logic_state);
+            for s in game.logic_state.console.as_ref().unwrap().read() {
+                rogalik::engine::log::info!("{}", s);
+            }
         }
 
         if self.graphics_state.reload {
