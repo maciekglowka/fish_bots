@@ -39,6 +39,7 @@ pub fn board_draw(
     tiles::draw_tiles(state, logic, context);
     fish::draw_fish(logic, context);
     draw_controls(state, input_state, context);
+    draw_status(logic, context);
 
     let mut animating = false;
     animating |= player::draw_player(&logic.world, state, context);
@@ -66,6 +67,18 @@ fn draw_controls(state: &mut BoardGraphics, input_state: &InputState, context: &
     if button.clicked(input_state) {
         state.reload = true;
     }
+}
+
+fn draw_status(logic: &LogicState, context: &mut Context) {
+    let bounds = get_viewport_bounds(context);
+    let _ = context.graphics.draw_text(
+        "default",
+        &format!("Score: {}", logic.score),
+        Vector2f::new(bounds.0.x + GAP, bounds.1.y - BASE_TEXT_SIZE - GAP),
+        UI_Z,
+        BASE_TEXT_SIZE,
+        SpriteParams::default(),
+    );
 }
 
 fn init_sprites(state: &mut BoardGraphics, world: &World) {

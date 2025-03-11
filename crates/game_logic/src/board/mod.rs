@@ -33,8 +33,9 @@ pub fn board_update(state: &mut LogicState) {
 }
 
 fn next_turn(state: &mut LogicState) {
+    // TODO make a player and npc queues
     player::handle_player_turn(state);
-    // systems::end_turn_systems(state);
+    systems::end_turn_systems(state);
 }
 
 fn handle_command_queue(state: &mut LogicState) -> bool {

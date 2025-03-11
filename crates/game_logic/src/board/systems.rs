@@ -1,6 +1,6 @@
 use rogalik::prelude::*;
 
-use crate::World;
+use crate::{LogicState, World};
 
 // pub(super) fn pick_collectibles(state: &mut super::BattleLogic, world: &mut World) {
 //     let Some(player) = crate::player::get_player_entity(world) else {
@@ -22,11 +22,23 @@ use crate::World;
 //     );
 // }
 
-// pub(super) fn end_turn_systems(state: &mut BoardLogic, world: &mut World) {
-//     // handle_timed(state, world);
-//     // check_board_win(state, world);
-//     // check_gameover(state, world);
-// }
+pub(super) fn end_turn_systems(state: &mut LogicState) {
+    check_fish_deliver(state);
+    // handle_timed(state, world);
+    // check_board_win(state, world);
+    // check_gameover(state, world);
+}
+
+fn check_fish_deliver(state: &mut LogicState) {
+    for i in 0..state.world.players.len() {
+        if state.world.players[i].v != state.world.home {
+            continue;
+        }
+        if let Some(loaded) = state.world.players[i].loaded.take() {
+            state.score += loaded.value;
+        }
+    }
+}
 
 // fn check_board_win(state: &mut BoardLogic, world: &World) {
 //     // if query_iter!(world, With(collectible))
