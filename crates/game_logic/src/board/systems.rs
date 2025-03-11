@@ -1,29 +1,15 @@
+use rand::prelude::*;
 use rogalik::prelude::*;
 
-use crate::{LogicState, World};
-
-// pub(super) fn pick_collectibles(state: &mut super::BattleLogic, world: &mut World) {
-//     let Some(player) = crate::player::get_player_entity(world) else {
-//         return;
-//     };
-//     let Some(player_position) = world.components.position.get(player) else {
-//         return;
-//     };
-//     query_execute!(
-//         world,
-//         With(collectible, position),
-//         |entity, _, position: &Vector2i| {
-//             if *player_position == *position {
-//                 state
-//                     .command_queue
-//                     .push_back(vec![Box::new(PickCollectible(entity))]);
-//             }
-//         }
-//     );
-// }
+use crate::{
+    globals::{BOARD_SIZE, SPAWN_INTERVAL},
+    LogicState,
+};
 
 pub(super) fn end_turn_systems(state: &mut LogicState) {
     check_fish_deliver(state);
+    handle_spawn(state);
+    handle_fish_life(state);
     // handle_timed(state, world);
     // check_board_win(state, world);
     // check_gameover(state, world);
@@ -37,6 +23,49 @@ fn check_fish_deliver(state: &mut LogicState) {
         if let Some(loaded) = state.world.players[i].loaded.take() {
             state.score += loaded.value;
         }
+    }
+}
+
+fn handle_spawn(state: &mut LogicState) {
+    if state.last_spawn > 0 {
+        state.last_spawn -= 1;
+        return;
+    }
+
+    let mut rng = thread_rng();
+
+    loop {
+        let v = Vector2i::new(
+            rng.gen_range(0..BOARD_SIZE) as i32,
+            rng.gen_range(0..BOARD_SIZE) as i32,
+        );
+        if state.world.fish.contains_key(&v) {
+            continue;
+        }
+
+        // TODO move to a command
+        state
+            .world
+            .fish
+            .insert(v, crate::world::Fish { life: 20, value: 1 });
+        break;
+    }
+
+    state.last_spawn = SPAWN_INTERVAL;
+}
+
+fn handle_fish_life(state: &mut LogicState) {
+    let mut to_remove = Vec::new();
+    for (k, v) in state.world.fish.iter_mut() {
+        if v.life == 0 {
+            to_remove.push(*k);
+            continue;
+        }
+        v.life -= 1;
+    }
+
+    for v in to_remove {
+        state.world.fish.remove(&v);
     }
 }
 

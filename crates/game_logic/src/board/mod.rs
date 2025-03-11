@@ -12,12 +12,6 @@ pub fn board_init(state: &mut LogicState, code: String) {
     state.score = 0;
     player::player_board_init(&mut state.world);
     state.world.home = Vector2i::new(BOARD_SIZE as i32 / 2, BOARD_SIZE as i32 / 2);
-
-    // TEMP
-    state.world.fish.insert(
-        Vector2i::new(BOARD_SIZE as i32 / 2, 1),
-        Fish { life: 20, value: 1 },
-    );
 }
 
 pub fn board_exit(state: &mut LogicState) {

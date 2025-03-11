@@ -9,5 +9,6 @@ edition = "2021"
 anyhow = { workspace = true }
 log = { workspace = true }
 piccolo = "0.3"
+rand = { workspace = true }
 rogalik = { workspace = true }
 

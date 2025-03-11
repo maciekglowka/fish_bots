@@ -17,6 +17,7 @@ use commands::Command;
 #[derive(Default)]
 pub struct LogicState {
     command_queue: VecDeque<Vec<Box<dyn Command>>>,
+    last_spawn: u32,
     pub console: Option<console::Console>,
     pub lua: piccolo::Lua,
     pub score: u32,

@@ -645,6 +645,7 @@ dependencies = [
  "anyhow",
  "log",
  "piccolo",
+ "rand",
  "rogalik",
 ]
 
