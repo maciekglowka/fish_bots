@@ -22,7 +22,9 @@ pub fn board_init(state: &mut LogicState, code: String) {
             .send("Lua initialization failed!".to_string());
     };
     state.world = crate::World::default();
+    state.done = false;
     state.score = 0;
+    state.turns = 0;
     player::player_board_init(&mut state.world);
     state.world.home = Vector2i::new(BOARD_SIZE as i32 / 2, BOARD_SIZE as i32 / 2);
 }

@@ -3,6 +3,10 @@
   <meta charset="UTF-8" />
   <style>
     @font-face {
+        font-family: "monogram";
+        src: url("monogram-extended.ttf") format("truetype"),
+    }
+    @font-face {
         font-family: "04B_03";
         src: url("04B_03.TTF") format("truetype"),
     }
@@ -19,14 +23,20 @@
       color: var(--fg-color)
       height: 100%;
       width: 100%;
-      font-family: '04B_03', monospace;
+      font-family: '04B_03', 'monogram', monospace;
+      font-size: 16px;
+      font-synthesis: none;
     }
 
     #container {
+      padding: 1em;      
+    }
+
+    #game-container {
       margin-top: 5em;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-around;
+      justify-content: space-between;
     }
 
     #rogalik-canvas {
@@ -41,15 +51,23 @@
     #console {
       width: 600px;
       height: 600px;
-      overflow: scroll;
-      scrollbar-color: var(--highlight-color) var(--line-color);
-      scrollbar-width: thin;
     }
-
     .monotext {
       border: 1px solid var(--line-color);
       color: var(--fg-color);
       padding: 4px;
+      overflow: scroll;
+      scrollbar-color: var(--highlight-color) var(--line-color);
+      scrollbar-width: thin;
+    }
+    #info {
+      color: var(--line-color);
+    }
+    a {
+      color: var(--highlight-color);
+    }
+    a:visited {
+      color: inherit;
     }
   </style>
   <script type="module">
@@ -62,9 +80,14 @@
 
 <body>
   <div id="container">
-    <canvas id="rogalik-canvas" width="100" height="100"></canvas>
-    <div id="bot-code" class="language-lua monotext"></div>
-    <div id="console" class="monotext"></div>
+    <div id="game-container">
+      <canvas id="rogalik-canvas" width="100" height="100"></canvas>
+      <div id="bot-code" class="language-lua monotext"></div>
+      <div id="console" class="monotext"></div>
+    </div>
+    <!-- <div id="info"> -->
+      <!-- Monogram font by <a href="https://datagoblin.itch.io/monogram">Datagoblin</a> -->
+    <!-- </div> -->
   </div>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>

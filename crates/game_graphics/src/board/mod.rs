@@ -73,7 +73,7 @@ fn draw_status(logic: &LogicState, context: &mut Context) {
     let bounds = get_viewport_bounds(context);
     let _ = context.graphics.draw_text(
         "default",
-        &format!("Score: {}", logic.score),
+        &format!("Score: {} | Turns: {}", logic.score, logic.turns),
         Vector2f::new(bounds.0.x + GAP, bounds.1.y - BASE_TEXT_SIZE - GAP),
         UI_Z,
         BASE_TEXT_SIZE,

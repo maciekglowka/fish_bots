@@ -11,6 +11,12 @@ pub struct World {
 impl World {
     pub(crate) fn to_lua<'gc>(&self, ctx: piccolo::Context<'gc>) -> Value<'gc> {
         let t = Table::new(&ctx);
+        // HOME
+        let h = Table::new(&ctx);
+        let _ = h.set(ctx, "x", self.home.x);
+        let _ = h.set(ctx, "y", self.home.y);
+        let _ = t.set(ctx, "home", h);
+        // END HOME
         let _ = t.set(ctx, "players", vec_to_value(&self.players, ctx));
         let _ = t.set(ctx, "fish", hashmap_to_value(&self.fish, ctx));
         t.into_value(ctx)

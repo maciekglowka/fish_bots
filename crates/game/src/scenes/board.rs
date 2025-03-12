@@ -48,7 +48,9 @@ impl<'a> Scene for Board {
             context,
             &input,
         ) {
-            game_logic::board::board_update(&mut game.logic_state);
+            if !game.logic_state.done {
+                game_logic::board::board_update(&mut game.logic_state);
+            }
             for s in game.logic_state.console.as_ref().unwrap().read() {
                 self.update_output(s);
             }

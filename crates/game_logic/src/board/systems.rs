@@ -2,7 +2,9 @@ use rand::prelude::*;
 use rogalik::prelude::*;
 
 use crate::{
-    globals::{BOARD_SIZE, SPAWN_INTERVAL},
+    globals::{
+        BOARD_SIZE, FISH_LIFE_MAX, FISH_LIFE_MIN, MAX_TURNS, SPAWN_INTERVAL_MAX, SPAWN_INTERVAL_MIN,
+    },
     LogicState,
 };
 
@@ -10,9 +12,8 @@ pub(super) fn end_turn_systems(state: &mut LogicState) {
     check_fish_deliver(state);
     handle_spawn(state);
     handle_fish_life(state);
-    // handle_timed(state, world);
-    // check_board_win(state, world);
-    // check_gameover(state, world);
+    state.turns += 1;
+    check_gameover(state);
 }
 
 fn check_fish_deliver(state: &mut LogicState) {
@@ -27,8 +28,8 @@ fn check_fish_deliver(state: &mut LogicState) {
 }
 
 fn handle_spawn(state: &mut LogicState) {
-    if state.last_spawn > 0 {
-        state.last_spawn -= 1;
+    if state.spawn_counter > 0 {
+        state.spawn_counter -= 1;
         return;
     }
 
@@ -44,14 +45,15 @@ fn handle_spawn(state: &mut LogicState) {
         }
 
         // TODO move to a command
+        let life = rng.gen_range(FISH_LIFE_MIN..=FISH_LIFE_MAX);
         state
             .world
             .fish
-            .insert(v, crate::world::Fish { life: 20, value: 1 });
+            .insert(v, crate::world::Fish { life, value: 1 });
         break;
     }
 
-    state.last_spawn = SPAWN_INTERVAL;
+    state.spawn_counter = rng.gen_range(SPAWN_INTERVAL_MIN..=SPAWN_INTERVAL_MAX);
 }
 
 fn handle_fish_life(state: &mut LogicState) {
@@ -69,19 +71,8 @@ fn handle_fish_life(state: &mut LogicState) {
     }
 }
 
-// fn check_board_win(state: &mut BoardLogic, world: &World) {
-//     // if query_iter!(world, With(collectible))
-//     //     .filter(|(_, c)| **c == CollectibleKind::Key)
-//     //     .collect::<Vec<_>>()
-//     //     .is_empty()
-//     // {
-//     //     log::debug!("Board won!");
-//     //     state.status = super::BattleStatus::Descend;
-//     // }
-// }
-
-// fn check_gameover(state: &mut BoardLogic, world: &World) {
-//     // if query!(world, With(player)).is_empty() {
-//     //     state.status = super::BattleStatus::Gameover;
-//     // }
-// }
+fn check_gameover(state: &mut LogicState) {
+    if state.turns >= MAX_TURNS {
+        state.done = true;
+    }
+}
