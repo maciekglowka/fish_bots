@@ -33,24 +33,33 @@
     }
 
     #game-container {
-      margin-top: 5em;
+      margin-top: 2em;
       display: flex;
       flex-wrap: wrap;
+      gap: 8px;
       justify-content: space-between;
     }
 
     #rogalik-canvas {
-      width: 600px;
+      min-width: 600px;
       height: 600px;
+      flex-shrink: 1;
+      border: 1px solid var(--line-color);
+      user-select: none;
+      outline: none;
     }
 
     #bot-code {
-      width: 600px;
+      min-width:450px;
       height: 600px;
+      flex-shrink: 2;
+      flex-grow: 2;
     }
     #console {
-      width: 600px;
+      min-width: 300px;
       height: 600px;
+      flex-shrink: 2;
+      flex-grow: 2;
     }
     .monotext {
       border: 1px solid var(--line-color);
@@ -60,7 +69,7 @@
       scrollbar-width: thin;
     }
     #info {
-      color: var(--line-color);
+      <!-- color: var(--line-color); -->
     }
     a {
       color: var(--highlight-color);
@@ -73,6 +82,9 @@
     }
     .highlight {
       color: var(--highlight-color);
+    }
+    .indent {
+      padding-left: 1em;
     }
   </style>
   <script type="module">
@@ -95,12 +107,40 @@
       <div id="console" class="monotext"></div>
     </div>
     <div id="info">
+      <h2>Info</h2>
+      <div class="indent">
+        A tiny coding game, where your goal is to catch as many fish as possible in 300 turns.
+      </div>
+
       <h2>World reference</h2>
+      <div class="indent">
+        <h3>World table</h3>
+        <ul>
+          <li><span class="highlight">fish</span> - 1-indexed list of Fish objects</li>
+          <li><span class="highlight">home</span> - home tile position {x, y}</li>
+          <li><span class="highlight">fish</span> - 1-indexed list of Player objects</li>
+        </ul>
+
+        <h3>Fish table</h3>
+        <ul>
+          <li><span class="highlight">x, y</span> - current position</li>
+          <li><span class="highlight">life</span> - turns of life left</li>
+          <li><span class="highlight">value</span> - fish score (currently always 1)</li>
+        </ul>
+
+        <h3>Player table</h3>
+        <ul>
+          <li><span class="highlight">x, y</span> - current position</li>
+          <li><span class="highlight">loaded</span> - collected Fish object or nil</li>
+        </ul>
+      </div>
 
       <h2>Custom functions</h2>
-      <ul>
-        <li><span class="highlight">debug(value)</span> - log any Lua value to a side console</li>
-      </ul>
+      <div class="indent">
+        <ul>
+          <li><span class="highlight">debug(value)</span> - log any Lua value to a side console</li>
+        </ul>
+      </div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-core.min.js"></script>

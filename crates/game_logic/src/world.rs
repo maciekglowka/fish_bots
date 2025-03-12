@@ -4,8 +4,8 @@ use std::collections::HashMap;
 
 #[derive(Default)]
 pub struct World {
-    pub home: Vector2i,
     pub fish: HashMap<Vector2i, Fish>,
+    pub home: Vector2i,
     pub players: Vec<Player>,
 }
 impl World {
