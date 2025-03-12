@@ -22,8 +22,8 @@ impl<'a> Button<'a> {
             origin,
             size,
             z,
-            sprite_atlas: "sprites",
-            sprite_index: 725,
+            sprite_atlas: "ui_sprites",
+            sprite_index: 0,
             span: None,
             slice: Some((4, Vector2f::splat(TILE_SIZE))),
         }
@@ -42,27 +42,30 @@ impl<'a> Button<'a> {
     //     self
     // }
     pub fn draw(&self, context: &mut Context, state: &InputState) {
+        let idx = if self.pressed(state) {
+            self.sprite_index + 1
+        } else {
+            self.sprite_index
+        };
         let _ = context.graphics.draw_atlas_sprite(
             self.sprite_atlas,
-            self.sprite_index,
+            idx,
             self.origin,
             self.z,
             self.size,
             SpriteParams {
                 slice: self.slice,
-                color: if self.pressed(state) {
-                    RED_COLOR
-                } else {
-                    PRIMARY_COLOR
-                },
                 ..Default::default()
             },
         );
         if let Some(span) = &self.span {
-            let span_offset = Vector2f::new(
+            let mut span_offset = Vector2f::new(
                 0.5 * (self.size.x - span.width(context)),
                 self.size.y - 0.5 * (self.size.y - span.height() as f32),
             );
+            if self.pressed(state) {
+                span_offset.y -= 1.;
+            }
             span.draw(self.origin + span_offset, self.z + 1, context);
         }
     }

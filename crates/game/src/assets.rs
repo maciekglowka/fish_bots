@@ -18,14 +18,14 @@ fn load_textures(context: &mut Context) {
         },
     );
     context.graphics.load_material(
-        "icons_small",
+        "ui_sprites",
         MaterialParams {
             atlas: Some(AtlasParams {
-                cols: 8,
-                rows: 8,
+                cols: 2,
+                rows: 1,
                 padding: None,
             }),
-            diffuse_path: "ui/icons_small.png",
+            diffuse_path: "ui/ui.png",
             ..Default::default()
         },
     );

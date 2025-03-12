@@ -14,7 +14,6 @@ pub const ENTITY_Z: i32 = 50;
 
 pub const BASE_TEXT_SIZE: f32 = 8.0;
 pub const DIGITS_TEXT_SIZE: f32 = 6.0;
-pub const ICON_SIZE: f32 = 5.0;
 
 pub const GAP: f32 = 4.;
 
