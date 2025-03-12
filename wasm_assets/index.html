@@ -1,42 +1,67 @@
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        background-color: rgb(0, 0, 0);
-        height: 100%;
-        width: 100%;
-      }
-      #rogalik-canvas {
-        <!-- width: 100%; -->
-        <!-- height: 100%; -->
-        width: 600px;
-        height: 600px;
-      }
-      #bot-code {
-        width: 600px;
-        height: 600px;
-      }
-    </style>
-    <script type="module">
-      import init from './game.js'
-      init()
-    </script>
-  </head>
-  <body>
-    <canvas id="rogalik-canvas" width="100" height="100"></canvas>
-    <textarea id="bot-code">
-i = 0
-function update_player ()
-    i = (i + 1) % 4
-     
-    if i == 0 then return 'down' end
-    if i == 1 then return 'left' end
-    if i == 2 then return 'up' end
+
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: rgb(0, 0, 0);
+      height: 100%;
+      width: 100%;
+    }
+
+    #rogalik-canvas {
+      width: 600px;
+      height: 600px;
+    }
+
+    #bot-code {
+      width: 600px;
+      height: 600px;
+      background-color: #fff;
+      font-family: monospace;
+    }
+  </style>
+  <script type="module">
+    import init from './game.js'
+    init()
+  </script>
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism.css" rel="stylesheet" />
+</head>
+
+<body>
+  <canvas id="rogalik-canvas" width="100" height="100"></canvas>
+  <div id="bot-code" class="language-lua"></div>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script type="module">
+    import {CodeJar} from 'https://cdn.jsdelivr.net/npm/codejar@4.2.0/dist/codejar.min.js'
+
+    const sample_code = `d = 0
+
+function update_player (i, world)
+    d = (d + 1) % 4
+
+    if d == 0 then return 'down' end
+    if d == 1 then return 'left' end
+    if d == 2 then return 'up' end
     return 'right'
-end
-</textarea>
-  </body>
+end`
+
+    let jar = CodeJar(document.querySelector('#bot-code'), Prism.highlightElement)
+    jar.updateOptions({tab: ' '.repeat(4)})
+
+    let saved = localStorage.getItem('code')
+    if (saved) {
+      jar.updateCode(saved)
+    } else {
+      jar.updateCode(sample_code)
+    }
+    jar.onUpdate(code => {
+      localStorage.setItem('code', code)
+    })
+  </script>
+</body>
+
 </html>

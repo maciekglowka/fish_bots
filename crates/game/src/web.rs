@@ -7,11 +7,11 @@ pub(crate) fn get_bot_code() -> String {
             let element = doc.get_element_by_id("bot-code")?;
             Some(
                 element
-                    .dyn_into::<web_sys::HtmlTextAreaElement>()
+                    .dyn_into::<web_sys::HtmlDivElement>()
                     .map_err(|_| ())
-                    .expect("Html element is not a text_area!"),
+                    .expect("Html element is not a div"),
             )
         })
         .expect("Can't find bot-code!");
-    textarea.value()
+    textarea.inner_text()
 }
