@@ -1,9 +1,0 @@
-Bomb:
-  sprite:
-    atlas: sprites
-    index: 486
-  components:
-    movable:
-    timed:
-      action_kind: !Explode 1
-      timer: 3

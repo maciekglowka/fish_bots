@@ -4,10 +4,8 @@ use std::collections::HashMap;
 use game_logic::World;
 
 use crate::{
-    globals::{BOAT_Z, GAP, RED_COLOR, TILE_SIZE},
-    input::{ButtonState, InputState},
-    ui::{Button, Span},
-    utils::{get_viewport_bounds, move_towards, tile_to_world, world_to_tile},
+    globals::{BOAT_LOADED_SPRITE, BOAT_SPRITE, ENTITY_Z, TILE_HEIGHT, TILE_SIZE},
+    utils::entity_z,
 };
 
 pub(super) fn draw_player(
@@ -19,21 +17,18 @@ pub(super) fn draw_player(
     let mut animating = false;
     for (sprite, player) in state.player_sprites.iter_mut().zip(&world.players) {
         animating |= sprite.update_position(player.v, delta);
-        let color = if player.loaded.is_some() {
-            Color(0, 255, 0, 255)
+        let idx = if player.loaded.is_some() {
+            BOAT_LOADED_SPRITE
         } else {
-            Color(255, 255, 255, 255)
+            BOAT_SPRITE
         };
         let _ = context.graphics.draw_atlas_sprite(
             "sprites",
-            942,
+            idx,
             sprite.origin,
-            BOAT_Z,
-            Vector2f::splat(TILE_SIZE),
-            SpriteParams {
-                color,
-                ..Default::default()
-            },
+            entity_z(player.v.y),
+            Vector2f::new(TILE_SIZE, TILE_HEIGHT),
+            SpriteParams::default(),
         );
     }
     animating

@@ -9,9 +9,9 @@ fn load_textures(context: &mut Context) {
         "sprites",
         MaterialParams {
             atlas: Some(AtlasParams {
-                cols: 49,
-                rows: 22,
-                padding: Some((1., 1.)),
+                cols: 5,
+                rows: 1,
+                padding: None,
             }),
             diffuse_path: "sprites/sprites.png",
             ..Default::default()

@@ -1,7 +1,0 @@
-Baleog:
-  sprite:
-    atlas: sprites
-    index: 30
-  components:
-    movable:
-    obstacle:

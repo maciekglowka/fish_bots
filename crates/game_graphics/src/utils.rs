@@ -29,3 +29,7 @@ pub(super) fn world_to_tile(v: Vector2f) -> Vector2i {
         (v.y / TILE_SIZE).floor() as i32,
     )
 }
+
+pub(super) fn entity_z(y: i32) -> i32 {
+    crate::globals::ENTITY_Z - y
+}

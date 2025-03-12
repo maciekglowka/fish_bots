@@ -1,4 +1,3 @@
-use rogalik::engine::log;
 use rogalik::prelude::*;
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;
@@ -43,7 +42,8 @@ fn main() {
 #[cfg(target_arch = "wasm32")]
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen(start))]
 pub fn wasm_main() {
-    console_log::init_with_level(log::Level::Info).expect("Can't init the logger!");
+    console_log::init_with_level(rogalik::engine::log::Level::Info)
+        .expect("Can't init the logger!");
     let engine = EngineBuilder::new().build_wasm(GameState::default(), Box::new(scenes::GameScene));
     engine.run();
 }

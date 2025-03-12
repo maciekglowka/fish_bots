@@ -1,5 +1,5 @@
 use piccolo::{IntoValue, Table, Value};
-use rogalik::{events::EventBus, math::vectors::Vector2i};
+use rogalik::math::vectors::Vector2i;
 use std::collections::HashMap;
 
 #[derive(Default)]
