@@ -7,7 +7,20 @@ mod systems;
 
 pub fn board_init(state: &mut LogicState, code: String) {
     state.console = Some(crate::console::Console::new());
-    state.lua = crate::scripting::init(code, state).expect("Lua initialization failed!");
+    if let Ok(lua) = crate::scripting::init(code, state) {
+        state.lua = lua;
+        state
+            .console
+            .as_ref()
+            .expect("Console not found!")
+            .send("Script loaded successfully!".to_string());
+    } else {
+        state
+            .console
+            .as_ref()
+            .expect("Console not found!")
+            .send("Lua initialization failed!".to_string());
+    };
     state.world = crate::World::default();
     state.score = 0;
     player::player_board_init(&mut state.world);

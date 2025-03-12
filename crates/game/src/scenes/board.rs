@@ -15,6 +15,14 @@ impl Board {
     fn get_code(&self) -> String {
         crate::web::get_bot_code()
     }
+    #[cfg(not(target_arch = "wasm32"))]
+    fn update_output(&self, _s: String) {
+        // TODO
+    }
+    #[cfg(target_arch = "wasm32")]
+    fn update_output(&self, s: String) {
+        crate::web::write_output(s);
+    }
 }
 impl<'a> Scene for Board {
     type Game = GameState;
@@ -42,7 +50,7 @@ impl<'a> Scene for Board {
         ) {
             game_logic::board::board_update(&mut game.logic_state);
             for s in game.logic_state.console.as_ref().unwrap().read() {
-                rogalik::engine::log::info!("{}", s);
+                self.update_output(s);
             }
         }
 

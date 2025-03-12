@@ -1,14 +1,32 @@
 <html>
-
 <head>
   <meta charset="UTF-8" />
   <style>
+    @font-face {
+        font-family: "04B_03";
+        src: url("04B_03.TTF") format("truetype"),
+    }
+    :root {
+      --bg-color: #282A36;
+      --fg-color: #F8F8F2;
+      --line-color: #44475A;
+      --highlight-color: #FF79C6;
+    }
     body {
       margin: 0;
       padding: 0;
-      background-color: rgb(0, 0, 0);
+      background-color: var(--bg-color);
+      color: var(--fg-color)
       height: 100%;
       width: 100%;
+      font-family: '04B_03', monospace;
+    }
+
+    #container {
+      margin-top: 5em;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
     }
 
     #rogalik-canvas {
@@ -19,20 +37,35 @@
     #bot-code {
       width: 600px;
       height: 600px;
-      background-color: #fff;
-      font-family: monospace;
+    }
+    #console {
+      width: 600px;
+      height: 600px;
+      overflow: scroll;
+      scrollbar-color: var(--highlight-color) var(--line-color);
+      scrollbar-width: thin;
+    }
+
+    .monotext {
+      border: 1px solid var(--line-color);
+      color: var(--fg-color);
+      padding: 4px;
     }
   </style>
   <script type="module">
     import init from './game.js'
     init()
   </script>
-  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism.css" rel="stylesheet" />
+  <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism-twilight.css" rel="stylesheet" /> -->
+  <link href="https://cdn.jsdelivr.net/gh/PrismJS/prism-themes@master/themes/prism-dracula.css" rel="stylesheet" />
 </head>
 
 <body>
-  <canvas id="rogalik-canvas" width="100" height="100"></canvas>
-  <div id="bot-code" class="language-lua"></div>
+  <div id="container">
+    <canvas id="rogalik-canvas" width="100" height="100"></canvas>
+    <div id="bot-code" class="language-lua monotext"></div>
+    <div id="console" class="monotext"></div>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script type="module">
