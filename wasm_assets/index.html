@@ -40,15 +40,18 @@
       display: grid;
       grid-template-columns: 600px 1fr 1fr;
       gap: 8px;
-      <!-- display: flex; -->
-      <!-- flex-wrap: wrap; -->
-      <!-- justify-content: space-between; -->
     }
+
+    @media (max-width: 1500px) {
+      #game-container {
+        grid-template-columns: 600px 1fr;
+      }
+    }
+
 
     #rogalik-canvas {
       min-width: 600px;
       height: 600px;
-      flex-shrink: 1;
       border: 1px solid var(--line-color);
       user-select: none;
       outline: none;
@@ -59,18 +62,11 @@
       font-size: inherit;
       color: var(--fg-color);
       background-color: var(--bg-color);
-      <!-- min-width:450px; -->
-      <!-- max-width:600px; -->
       height: 600px;
-      flex-shrink: 2;
-      flex-grow: 2;
       resize: none;
     }
     #console {
-      <!-- min-width: 300px; -->
       height: 600px;
-      flex-shrink: 2;
-      flex-grow: 2;
     }
     .monotext {
       border: 1px solid var(--line-color);
