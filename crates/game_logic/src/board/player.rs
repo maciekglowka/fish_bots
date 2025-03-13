@@ -1,19 +1,21 @@
-use rogalik::math::vectors::Vector2i;
+use rogalik::math::vectors::{Vector2i, ORTHO_DIRECTIONS};
 
 use crate::{
     commands::{Command, MovePlayerCommand},
-    globals::BOARD_SIZE,
     scripting::get_player_action,
     world::{Player, World},
+    LogicState,
 };
 
-pub(super) fn player_board_init(world: &mut World) {
-    world.players.clear();
-    // TEMP
-    world.players.push(Player {
-        v: Vector2i::new(BOARD_SIZE as i32 / 2 as i32, BOARD_SIZE as i32 / 2 - 1),
-        ..Default::default()
-    })
+pub(super) fn player_board_init(state: &mut LogicState) {
+    state.world.players.clear();
+    for i in 0..state.config.bot_count.min(3) {
+        let v = state.world.home + ORTHO_DIRECTIONS[i];
+        state.world.players.push(Player {
+            v,
+            ..Default::default()
+        })
+    }
 }
 
 pub(super) fn handle_player_turn(state: &mut crate::LogicState) {

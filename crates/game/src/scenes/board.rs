@@ -13,7 +13,6 @@ impl Board {
     }
     #[cfg(target_arch = "wasm32")]
     fn get_code(&self) -> String {
-        crate::web::get_config();
         crate::web::get_bot_code()
     }
     #[cfg(not(target_arch = "wasm32"))]
@@ -24,12 +23,20 @@ impl Board {
     fn update_output(&self, s: String) {
         crate::web::write_output(s);
     }
+    #[cfg(not(target_arch = "wasm32"))]
+    fn get_config(&self) -> game_logic::Config {
+        game_logic::Config::default()
+    }
+    #[cfg(target_arch = "wasm32")]
+    fn get_config(&self) -> game_logic::Config {
+        crate::web::get_config()
+    }
 }
 impl<'a> Scene for Board {
     type Game = GameState;
 
     fn enter(&mut self, game: &mut Self::Game, _context: &mut rogalik::engine::Context) {
-        game_logic::board::board_init(&mut game.logic_state, self.get_code());
+        game_logic::board::board_init(&mut game.logic_state, self.get_code(), self.get_config());
         game_graphics::board::board_init(&mut self.graphics_state, &mut game.logic_state);
     }
     fn exit(&mut self, game: &mut Self::Game, _context: &mut rogalik::engine::Context) {

@@ -5,8 +5,14 @@ use crate::{globals::BOARD_SIZE, world::Fish, LogicState};
 pub(crate) mod player;
 mod systems;
 
-pub fn board_init(state: &mut LogicState, code: String) {
+pub fn board_init(state: &mut LogicState, code: String, config: crate::Config) {
     state.console = Some(crate::console::Console::new());
+    state
+        .console
+        .as_ref()
+        .unwrap()
+        .send(format!("Initializing game with: {:?}", config));
+    state.config = config;
     if let Ok(lua) = crate::scripting::init(code, state) {
         state.lua = lua;
         state
@@ -25,8 +31,8 @@ pub fn board_init(state: &mut LogicState, code: String) {
     state.done = false;
     state.score = 0;
     state.turns = 0;
-    player::player_board_init(&mut state.world);
     state.world.home = Vector2i::new(BOARD_SIZE as i32 / 2, BOARD_SIZE as i32 / 2);
+    player::player_board_init(state);
 }
 
 pub fn board_exit(state: &mut LogicState) {

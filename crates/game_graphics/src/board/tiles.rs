@@ -1,10 +1,10 @@
 use rogalik::prelude::*;
 
-use game_logic::{globals::BOARD_SIZE, LogicState};
+use game_logic::{globals::BOARD_SIZE, LogicState, World};
 
 use super::BoardGraphics;
 use crate::{
-    globals::{ENTITY_Z, HOME_SPRITE, MAP_Z, TILE_HEIGHT, TILE_SIZE, WATER_SPRITE},
+    globals::{HOME_SPRITE, MAP_Z, TILE_HEIGHT, TILE_SIZE, WATER_SPRITE},
     utils::{entity_z, tile_to_world},
 };
 

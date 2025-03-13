@@ -37,10 +37,12 @@
 
     #game-container {
       margin-top: 1em;
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 600px 1fr 1fr;
       gap: 8px;
-      justify-content: space-between;
+      <!-- display: flex; -->
+      <!-- flex-wrap: wrap; -->
+      <!-- justify-content: space-between; -->
     }
 
     #rogalik-canvas {
@@ -57,15 +59,15 @@
       font-size: inherit;
       color: var(--fg-color);
       background-color: var(--bg-color);
-      min-width:450px;
-      max-width:600px;
+      <!-- min-width:450px; -->
+      <!-- max-width:600px; -->
       height: 600px;
       flex-shrink: 2;
       flex-grow: 2;
       resize: none;
     }
     #console {
-      min-width: 300px;
+      <!-- min-width: 300px; -->
       height: 600px;
       flex-shrink: 2;
       flex-grow: 2;
@@ -119,7 +121,15 @@
 
       <div>
         <span>Variable fish value:</span>
-        <select id="fish_values">
+        <select id="variable-fish-value">
+          <option value="false">No</option>
+          <option value="true">Yes</option>
+        </select>
+      </div>
+
+      <div>
+        <span>Obstacles:</span>
+        <select id="obstacles">
           <option value="false">No</option>
           <option value="true">Yes</option>
         </select>
