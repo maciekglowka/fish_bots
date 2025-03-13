@@ -2,19 +2,14 @@
 <head>
   <meta charset="UTF-8" />
   <style>
-    @font-face {
-        font-family: "monogram";
-        src: url("monogram-extended.ttf") format("truetype"),
-    }
-    @font-face {
-        font-family: "04B_03";
-        src: url("04B_03.TTF") format("truetype"),
-    }
     :root {
       --bg-color: #282A36;
       --fg-color: #F8F8F2;
       --line-color: #44475A;
       --highlight-color: #FF79C6;
+    }
+    * {
+      box-sizing: border-box;
     }
     body {
       margin: 0;
@@ -23,7 +18,7 @@
       color: var(--fg-color);
       height: 100%;
       width: 100%;
-      font-family: '04B_03', 'monogram', monospace;
+      font-family: monospace;
       font-size: 16px;
       font-synthesis: none;
     }
@@ -32,8 +27,16 @@
       padding: 1em;      
     }
 
-    #game-container {
+    #game-config {
       margin-top: 2em;
+      width: 100%;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    #game-container {
+      margin-top: 1em;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
@@ -55,9 +58,11 @@
       color: var(--fg-color);
       background-color: var(--bg-color);
       min-width:450px;
+      max-width:600px;
       height: 600px;
       flex-shrink: 2;
       flex-grow: 2;
+      resize: none;
     }
     #console {
       min-width: 300px;
@@ -73,7 +78,6 @@
       scrollbar-width: thin;
     }
     #info {
-      <!-- color: var(--line-color); -->
     }
     a {
       color: var(--highlight-color);
@@ -95,7 +99,6 @@
     import init from './game.js'
     init()
   </script>
-  <link href="https://cdn.jsdelivr.net/gh/PrismJS/prism-themes@master/themes/prism-dracula.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -104,10 +107,27 @@
       <h1>FishBots</h1>
       <span>A Lua coding game</span>
     </div>
+    <div id="game-config">
+      <div>
+        <span>Number of boats:</span>
+        <select id="bot-count">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+
+      <div>
+        <span>Variable fish value:</span>
+        <select id="fish_values">
+          <option value="false">No</option>
+          <option value="true">Yes</option>
+        </select>
+      </div>
+    </div>
     <div id="game-container">
       <canvas id="rogalik-canvas" width="100" height="100"></canvas>
-      <!-- <div id="bot-code" class="language-lua monotext"></div> -->
-      <textarea id="bot-code" class="monotext"></textarea>
+      <textarea id="bot-code" class="monotext" wrap="off" spellcheck="false"></textarea>
       <div id="console" class="monotext"></div>
     </div>
     <div id="info">
@@ -147,11 +167,8 @@
       </div>
     </div>
   </div>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-core.min.js"></script> -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/autoloader/prism-autoloader.min.js"></script> -->
-  <script src="prism.js"></script>
   <script type="module">
-    const sample_code = `d = 0
+    const sampleCode = `d = 0
 
 function update_player (i, world)
     d = (d + 1) % 4
@@ -162,24 +179,18 @@ function update_player (i, world)
     return 'right'
 end`
 
-    // let jar = CodeJar(document.querySelector('#bot-code'), Prism.highlightElement)
-    // jar.updateOptions({tab: ' '.repeat(4)})
     let codeArea = document.querySelector('#bot-code')
 
     let saved = localStorage.getItem('code')
     if (saved) {
-      // jar.updateCode(saved)
         codeArea.value = saved
     } else {
-      // jar.updateCode(sample_code)
+        codeArea.value = sampleCode
     }
 
     codeArea.addEventListener("change", (event) => {
-      console.log(codeArea.value)
-    });
-    // jar.onUpdate(code => {
-      // localStorage.setItem('code', code)
-    // })
+      localStorage.setItem('code', codeArea.value)
+    })
   </script>
 </body>
 

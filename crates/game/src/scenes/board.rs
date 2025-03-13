@@ -13,6 +13,7 @@ impl Board {
     }
     #[cfg(target_arch = "wasm32")]
     fn get_code(&self) -> String {
+        crate::web::get_config();
         crate::web::get_bot_code()
     }
     #[cfg(not(target_arch = "wasm32"))]
