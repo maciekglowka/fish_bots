@@ -33,6 +33,7 @@ pub fn board_init(state: &mut LogicState, code: String, config: crate::Config) {
     state.turns = 0;
     state.world.home = Vector2i::new(BOARD_SIZE as i32 / 2, BOARD_SIZE as i32 / 2);
     player::player_board_init(state);
+    systems::start_game_systems(state);
 }
 
 pub fn board_exit(state: &mut LogicState) {
@@ -59,6 +60,9 @@ fn handle_command_queue(state: &mut LogicState) -> bool {
     };
     for command in commands {
         if !command.is_valid(&state.world) {
+            if let Some(console) = &state.console {
+                console.send(format!("Invalid command {:?}", command));
+            }
             continue;
         };
         if let Ok(output) = command.execute(&mut state.world) {

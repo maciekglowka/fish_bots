@@ -6,6 +6,7 @@ use std::collections::HashMap;
 pub struct World {
     pub fish: HashMap<Vector2i, Fish>,
     pub home: Vector2i,
+    pub obstacles: HashMap<Vector2i, bool>,
     pub players: Vec<Player>,
 }
 impl World {
@@ -19,6 +20,7 @@ impl World {
         // END HOME
         let _ = t.set(ctx, "players", vec_to_value(&self.players, ctx));
         let _ = t.set(ctx, "fish", hashmap_to_value(&self.fish, ctx));
+        let _ = t.set(ctx, "obstacles", hashmap_to_value(&self.obstacles, ctx));
         t.into_value(ctx)
     }
 }

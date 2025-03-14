@@ -9,7 +9,7 @@ fn load_textures(context: &mut Context) {
         "sprites",
         MaterialParams {
             atlas: Some(AtlasParams {
-                cols: 5,
+                cols: 8,
                 rows: 1,
                 padding: None,
             }),

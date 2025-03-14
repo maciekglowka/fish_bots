@@ -35,3 +35,4 @@ pub const HOME_SPRITE: usize = 1;
 pub const BOAT_SPRITE: usize = 2;
 pub const BOAT_LOADED_SPRITE: usize = 3;
 pub const FISH_SPRITE: usize = 4;
+pub const ROCK_SPRITE: usize = 7;

@@ -59,7 +59,8 @@ impl Command for MovePlayerCommand {
         let Some(p) = world.players.get(self.idx) else {
             return false;
         };
-        is_on_board(p.v + self.dir)
+        let target = p.v + self.dir;
+        is_on_board(target) && !world.obstacles.contains_key(&target)
     }
 }
 
