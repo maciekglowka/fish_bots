@@ -2,6 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
     :root {
       --bg-color: #282A36;
       --fg-color: #F8F8F2;
@@ -18,7 +19,7 @@
       color: var(--fg-color);
       height: 100%;
       width: 100%;
-      font-family: monospace;
+      font-family: 'Fira Code', monospace;
       font-size: 16px;
       font-synthesis: none;
     }
@@ -64,8 +65,20 @@
       height: 600px;
       resize: none;
     }
+    #console-container {
+      position: relative;
+    }
     #console {
       height: 600px;
+    }
+    #console-clear {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background-color: var(--line-color);
+      padding: 4px 8px;
+      border-radius: 2px;
+      cursor: pointer;
     }
     .monotext {
       border: 1px solid var(--line-color);
@@ -137,7 +150,10 @@
     <div id="game-container">
       <canvas id="rogalik-canvas" width="100" height="100"></canvas>
       <textarea id="bot-code" class="monotext" wrap="off" spellcheck="false"></textarea>
-      <div id="console" class="monotext"></div>
+      <div id="console-container">
+        <div id="console" class="monotext"></div>
+        <div id="console-clear" onclick="document.getElementById('console').innerHTML = ''">Clear</div>
+      </div>
     </div>
     <div id="info">
       <h2>Goal</h2>
@@ -225,10 +241,10 @@ end`
         var end = this.selectionEnd;
 
         this.value = this.value.substring(0, start) +
-          "\t" + this.value.substring(end);
+          " ".repeat(4) + this.value.substring(end);
 
         this.selectionStart =
-          this.selectionEnd = start + 1;
+          this.selectionEnd = start + 4;
       }
     });
   </script>
