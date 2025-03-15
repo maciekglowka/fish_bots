@@ -32,7 +32,7 @@ fn handle_obstacle_spawn(state: &mut LogicState) {
         let Some(v) = get_free_tile(&state.world) else {
             return;
         };
-        state.world.obstacles.insert(v, true);
+        state.world.obstacles.insert(v);
     }
 }
 
@@ -104,5 +104,5 @@ fn get_free_tile(world: &World) -> Option<Vector2i> {
 }
 
 fn is_tile_free(v: Vector2i, world: &World) -> bool {
-    !world.fish.contains_key(&v) && !world.obstacles.contains_key(&v) && v.manhattan(world.home) > 1
+    !world.fish.contains_key(&v) && !world.obstacles.contains(&v) && v.manhattan(world.home) > 1
 }

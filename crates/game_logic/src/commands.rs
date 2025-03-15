@@ -60,7 +60,7 @@ impl Command for MovePlayerCommand {
             return false;
         };
         let target = p.v + self.dir;
-        is_on_board(target) && !world.obstacles.contains_key(&target)
+        is_on_board(target) && !world.obstacles.contains(&target)
     }
 }
 

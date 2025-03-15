@@ -38,7 +38,7 @@ fn draw_map(logic: &LogicState, context: &mut Context) {
     );
 
     //draw obstacles
-    for k in logic.world.obstacles.keys() {
+    for k in logic.world.obstacles.iter() {
         let _ = context.graphics.draw_atlas_sprite(
             "sprites",
             ROCK_SPRITE,

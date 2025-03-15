@@ -48,7 +48,6 @@
       }
     }
 
-
     #rogalik-canvas {
       min-width: 600px;
       height: 600px;
@@ -75,7 +74,11 @@
       scrollbar-color: var(--highlight-color) var(--line-color);
       scrollbar-width: thin;
     }
-    #info {
+    #info code {
+      color: var(--highlight-color);
+      background-color: var(--line-color);
+      padding: 2px 4px;
+      border-radius: 2px;
     }
     a {
       color: var(--highlight-color);
@@ -137,9 +140,14 @@
       <div id="console" class="monotext"></div>
     </div>
     <div id="info">
-      <h2>Info</h2>
+      <h2>Goal</h2>
       <div class="indent">
-        A tiny coding game, where your goal is to catch as many fish as possible in 300 turns.
+        <p>Send your boats to collect as many fish as possible. You have 300 turns for that.</p>
+        <p>
+          The boats are controlled by executing commands via a <code>update_player (i, world)</code> function.
+          <code>"up"</code>, <code>"down"</code>, <code>"left"</code> and <code>"right"</code> are valid return values.
+          In case of no or invalid output the boat will wait for a turn.
+        </p>
       </div>
 
       <h2>World reference</h2>
@@ -148,14 +156,15 @@
         <ul>
           <li><span class="highlight">fish</span> - 1-indexed list of Fish objects</li>
           <li><span class="highlight">home</span> - home tile position {x, y}</li>
-          <li><span class="highlight">fish</span> - 1-indexed list of Player objects</li>
+          <li><span class="highlight">players</span> - 1-indexed list of Player objects</li>
+          <li><span class="highlight">obstacles</span> - 1-indexed list of obstacle positions</li>
         </ul>
 
         <h3>Fish table</h3>
         <ul>
           <li><span class="highlight">x, y</span> - current position</li>
           <li><span class="highlight">life</span> - turns of life left</li>
-          <li><span class="highlight">value</span> - fish score (currently always 1)</li>
+          <li><span class="highlight">value</span> - fish score / value</li>
         </ul>
 
         <h3>Player table</h3>

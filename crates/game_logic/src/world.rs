@@ -1,12 +1,12 @@
 use piccolo::{IntoValue, Table, Value};
 use rogalik::math::vectors::Vector2i;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 #[derive(Default)]
 pub struct World {
     pub fish: HashMap<Vector2i, Fish>,
     pub home: Vector2i,
-    pub obstacles: HashMap<Vector2i, bool>,
+    pub obstacles: HashSet<Vector2i>,
     pub players: Vec<Player>,
 }
 impl World {
@@ -20,7 +20,7 @@ impl World {
         // END HOME
         let _ = t.set(ctx, "players", vec_to_value(&self.players, ctx));
         let _ = t.set(ctx, "fish", hashmap_to_value(&self.fish, ctx));
-        let _ = t.set(ctx, "obstacles", hashmap_to_value(&self.obstacles, ctx));
+        let _ = t.set(ctx, "obstacles", hashset_to_value(&self.obstacles, ctx));
         t.into_value(ctx)
     }
 }
@@ -40,7 +40,7 @@ impl<'gc> IntoValue<'gc> for Player {
     }
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct Fish {
     pub life: u32,
     pub value: u32,
@@ -76,6 +76,17 @@ fn vec_to_value<'gc, T: Copy + IntoValue<'gc>>(
     let t = Table::new(&ctx);
     for (i, a) in v.iter().enumerate() {
         let _ = t.set(ctx, i as u32 + 1, *a);
+    }
+    t.into()
+}
+
+fn hashset_to_value<'gc>(hashset: &HashSet<Vector2i>, ctx: piccolo::Context<'gc>) -> Value<'gc> {
+    let t = Table::new(&ctx);
+    for (i, k) in hashset.iter().enumerate() {
+        let st = Table::new(&ctx);
+        let _ = st.set(ctx, "x", k.x);
+        let _ = st.set(ctx, "y", k.y);
+        let _ = t.set(ctx, (i as u32 + 1).into_value(ctx), st);
     }
     t.into()
 }
