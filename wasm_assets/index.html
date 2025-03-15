@@ -157,7 +157,7 @@
           <li><span class="highlight">fish</span> - 1-indexed list of Fish objects</li>
           <li><span class="highlight">home</span> - home tile position {x, y}</li>
           <li><span class="highlight">players</span> - 1-indexed list of Player objects</li>
-          <li><span class="highlight">obstacles</span> - 1-indexed list of obstacle positions</li>
+          <li><span class="highlight">obstacles</span> - 1-indexed list of obstacle positions {x, y}/li>
         </ul>
 
         <h3>Fish table</h3>
@@ -179,6 +179,16 @@
         <ul>
           <li><span class="highlight">debug(value)</span> - log any Lua value to a side console</li>
         </ul>
+      </div>
+      <h2>Misc.</h2>
+      <div class="indent">
+        <p>
+        Check <a href="https://github.com/maciekglowka/fish_bots">https://github.com/maciekglowka/fish_bots</a> if you're interested
+        how the game works under the hood.
+        </p>
+        <p>
+        <strong>Lua compatiblity: </strong>the game uses a pure-rust Lua vm <a href="https://github.com/kyren/piccolo">Piccolo</a> in the Lua::core mode.
+        </p>
       </div>
     </div>
   </div>
@@ -206,6 +216,21 @@ end`
     codeArea.addEventListener("change", (event) => {
       localStorage.setItem('code', codeArea.value)
     })
+
+    // allow tab indentation (straight from stack-overflow https://stackoverflow.com/questions/6637341/use-tab-to-indent-in-textarea)
+    document.getElementById('bot-code').addEventListener('keydown', function(e) {
+      if (e.key == 'Tab') {
+        e.preventDefault();
+        var start = this.selectionStart;
+        var end = this.selectionEnd;
+
+        this.value = this.value.substring(0, start) +
+          "\t" + this.value.substring(end);
+
+        this.selectionStart =
+          this.selectionEnd = start + 1;
+      }
+    });
   </script>
 </body>
 

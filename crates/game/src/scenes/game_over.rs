@@ -15,12 +15,13 @@ impl<'a> Scene for GameOver {
         game: &mut Self::Game,
         context: &mut Context,
     ) -> Option<SceneChange<Self::Game>> {
+        let bounds = game_graphics::get_viewport_bounds(context);
         let _ = context.graphics.draw_text(
             "default",
-            "Game Over :(",
-            Vector2f::ZERO,
+            &format!("You've got {} points!", game.logic_state.score),
+            Vector2f::new(bounds.0.x + 16., bounds.1.y - 24.),
             0,
-            16.,
+            8.,
             SpriteParams::default(),
         );
 

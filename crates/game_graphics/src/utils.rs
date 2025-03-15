@@ -1,7 +1,7 @@
 use crate::globals::TILE_SIZE;
 use rogalik::prelude::*;
 
-pub(crate) fn get_viewport_bounds(context: &Context) -> (Vector2f, Vector2f) {
+pub fn get_viewport_bounds(context: &Context) -> (Vector2f, Vector2f) {
     let camera = context.graphics.get_current_camera();
     camera.get_bounds()
 }

@@ -56,9 +56,12 @@ impl<'a> Scene for Board {
             context,
             &input,
         ) {
-            if !game.logic_state.done {
-                game_logic::board::board_update(&mut game.logic_state);
+            if game.logic_state.done {
+                return Some(SceneChange::Switch(Box::new(
+                    super::game_over::GameOver::default(),
+                )));
             }
+            game_logic::board::board_update(&mut game.logic_state);
             for s in game.logic_state.console.as_ref().unwrap().read() {
                 self.update_output(s);
             }
@@ -67,15 +70,6 @@ impl<'a> Scene for Board {
         if self.graphics_state.reload {
             return Some(SceneChange::Pop);
         }
-        // match self.logic_state.status {
-        //     BoardStatus::Gameover => Some(SceneChange::Switch(Box::new(
-        //         super::game_over::GameOver::default(),
-        //     ))),
-        //     BoardStatus::Descend => Some(SceneChange::Switch(Box::new(
-        //         super::upgrade::Upgrade::default(),
-        //     ))),
-        //     BoardStatus::Running => None,
-        // }
         None
     }
 }
