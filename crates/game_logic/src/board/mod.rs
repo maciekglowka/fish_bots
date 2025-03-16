@@ -6,13 +6,15 @@ pub(crate) mod player;
 mod systems;
 
 pub fn board_init(state: &mut LogicState, code: String, config: crate::Config) {
-    state.console = Some(crate::console::Console::new());
+    state.reset();
+
     state
         .console
         .as_ref()
         .unwrap()
         .send(format!("Initializing game with: {:?}", config));
     state.config = config;
+
     if let Ok(lua) = crate::scripting::init(code, state) {
         state.lua = lua;
         state
@@ -27,10 +29,7 @@ pub fn board_init(state: &mut LogicState, code: String, config: crate::Config) {
             .expect("Console not found!")
             .send("Lua initialization failed!".to_string());
     };
-    state.world = crate::World::default();
-    state.done = false;
-    state.score = 0;
-    state.turns = 0;
+
     state.world.home = Vector2i::new(BOARD_SIZE as i32 / 2, BOARD_SIZE as i32 / 2);
     player::player_board_init(state);
     systems::start_game_systems(state);

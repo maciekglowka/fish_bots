@@ -48,8 +48,8 @@ fn check_fish_deliver(state: &mut LogicState) {
 }
 
 fn handle_fish_spawn(state: &mut LogicState) {
-    if state.spawn_counter > 0 {
-        state.spawn_counter -= 1;
+    if state.spawn_timer > 0 {
+        state.spawn_timer -= 1;
         return;
     }
 
@@ -64,12 +64,17 @@ fn handle_fish_spawn(state: &mut LogicState) {
     } else {
         1
     };
-    state
-        .world
-        .fish
-        .insert(v, crate::world::Fish { life, value });
+    state.world.fish.insert(
+        v,
+        crate::world::Fish {
+            id: state.fish_counter,
+            life,
+            value,
+        },
+    );
 
-    state.spawn_counter = rng.gen_range(SPAWN_INTERVAL_MIN..=SPAWN_INTERVAL_MAX);
+    state.fish_counter += 1;
+    state.spawn_timer = rng.gen_range(SPAWN_INTERVAL_MIN..=SPAWN_INTERVAL_MAX);
 }
 
 fn handle_fish_life(state: &mut LogicState) {

@@ -161,8 +161,10 @@
         <p>Send your boats to collect as many fish as possible. You have 300 turns for that.</p>
         <p>
           The boats are controlled by executing commands via a <code>update_player (i, world)</code> function.
-          <code>"up"</code>, <code>"down"</code>, <code>"left"</code> and <code>"right"</code> are valid return values.
+          <code>"up"</code>, <code>"down"</code>, <code>"left"</code> and <code>"right"</code> are valid return values
+          (+x is right, +y is up).
           In case of no or invalid output the boat will wait for a turn.
+          Each boat can carry only one fish.
         </p>
       </div>
 
@@ -170,7 +172,7 @@
       <div class="indent">
         <h3>World table</h3>
         <ul>
-          <li><span class="highlight">fish</span> - 1-indexed list of Fish objects</li>
+          <li><span class="highlight">fish</span> - a table of Fish objects (fish id is the key)</li>
           <li><span class="highlight">home</span> - home tile position {x, y}</li>
           <li><span class="highlight">players</span> - 1-indexed list of Player objects</li>
           <li><span class="highlight">obstacles</span> - 1-indexed list of obstacle positions {x, y}</li>
@@ -181,6 +183,7 @@
           <li><span class="highlight">x, y</span> - current position</li>
           <li><span class="highlight">life</span> - turns of life left</li>
           <li><span class="highlight">value</span> - fish score / value</li>
+          <li><span class="highlight">id</span> - unique id (auto increment)</li>
         </ul>
 
         <h3>Player table</h3>
@@ -205,6 +208,14 @@
         <p>
         <strong>Lua compatiblity: </strong>the game uses a pure-rust Lua vm <a href="https://github.com/kyren/piccolo">Piccolo</a> in the Lua::core mode.
         </p>
+      </div>
+      <h2>Changelog</h2>
+      <div class="indent">
+        <span class="highlight">2025-03-16</span>
+        <ul>
+          <li>Fish id's</li>
+          <li>Spawn rate and fish life adjustment</li>
+        </ul>
       </div>
     </div>
   </div>

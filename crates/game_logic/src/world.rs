@@ -42,28 +42,33 @@ impl<'gc> IntoValue<'gc> for Player {
 
 #[derive(Clone, Copy, Debug)]
 pub struct Fish {
+    pub id: u32,
     pub life: u32,
     pub value: u32,
 }
 impl<'gc> IntoValue<'gc> for Fish {
     fn into_value(self, ctx: piccolo::Context<'gc>) -> Value<'gc> {
         let t = Table::new(&ctx);
+        let _ = t.set(ctx, "id", self.id);
         let _ = t.set(ctx, "life", self.life);
         let _ = t.set(ctx, "value", self.value);
         t.into_value(ctx)
     }
 }
 
+/// Expects an id field to use as a table key
 fn hashmap_to_value<'gc, T: Copy + IntoValue<'gc>>(
     hashmap: &HashMap<Vector2i, T>,
     ctx: piccolo::Context<'gc>,
 ) -> Value<'gc> {
     let t = Table::new(&ctx);
-    for (i, (k, v)) in hashmap.iter().enumerate() {
+    for (k, v) in hashmap.iter() {
         if let Value::Table(st) = v.into_value(ctx) {
             let _ = st.set(ctx, "x", k.x);
             let _ = st.set(ctx, "y", k.y);
-            let _ = t.set(ctx, (i as u32 + 1).into_value(ctx), st);
+            if let Value::Integer(i) = st.get(ctx, "id") {
+                let _ = t.set(ctx, (i as u32).into_value(ctx), st);
+            }
         }
     }
     t.into()
