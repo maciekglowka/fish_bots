@@ -1,6 +1,7 @@
 <html>
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
     :root {
@@ -37,10 +38,19 @@
     }
 
     #game-container {
+      width: 100%;
       margin-top: 1em;
       display: grid;
       grid-template-columns: 600px 1fr 1fr;
       gap: 8px;
+    }
+
+    #rogalik-canvas {
+      width: 600px;
+      height: 600px;
+      border: 1px solid var(--line-color);
+      user-select: none;
+      outline: none;
     }
 
     @media (max-width: 1500px) {
@@ -48,13 +58,13 @@
         grid-template-columns: 600px 1fr;
       }
     }
-
-    #rogalik-canvas {
-      min-width: 600px;
-      height: 600px;
-      border: 1px solid var(--line-color);
-      user-select: none;
-      outline: none;
+    @media (max-width: 900px) {
+      #game-container {
+        grid-template-columns: 1fr;
+      }
+      #rogalik-canvas {
+        width: 100%;
+      }
     }
 
     #bot-code {
