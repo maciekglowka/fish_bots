@@ -22,7 +22,6 @@
       width: 100%;
       font-family: 'Fira Code', monospace;
       font-size: 16px;
-      font-synthesis: none;
     }
 
     #container {
@@ -216,7 +215,13 @@
         how the game works under the hood.
         </p>
         <p>
-        <strong>Lua compatiblity: </strong>the game uses a pure-rust Lua vm <a href="https://github.com/kyren/piccolo">Piccolo</a> in the Lua::core mode.
+        <strong>Lua compatiblity: </strong>the game uses a pure-rust Lua VM <a href="https://github.com/kyren/piccolo">Piccolo</a>,
+        which is still in development and thus has limited capabilities.<br />
+        From the README:
+          <i>
+            A large amount of the stdlib is not implemented yet. Most "peripheral" parts of the stdlib are this way,
+            the io, file, os, package, string, table, and utf8 libs are either missing or very sparsely implemented.
+          </i>
         </p>
       </div>
       <h2>Changelog</h2>
@@ -225,6 +230,12 @@
         <ul>
           <li>Fish id's</li>
           <li>Spawn rate and fish life adjustment</li>
+        </ul>
+        <span class="highlight">2025-03-19</span>
+        <ul>
+          <li>WebGL2 capabilities fix on mobile (attachment colours limit is now set to 4)</li>
+          <li>A single column layout for resolutions lower than 900px</li>
+          <li>Propagate Lua interpreter errors to the game console</li>
         </ul>
       </div>
     </div>

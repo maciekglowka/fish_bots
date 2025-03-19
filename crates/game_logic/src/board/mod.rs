@@ -15,19 +15,24 @@ pub fn board_init(state: &mut LogicState, code: String, config: crate::Config) {
         .send(format!("Initializing game with: {:?}", config));
     state.config = config;
 
-    if let Ok(lua) = crate::scripting::init(code, state) {
-        state.lua = lua;
-        state
-            .console
-            .as_ref()
-            .expect("Console not found!")
-            .send("Script loaded successfully!".to_string());
-    } else {
-        state
-            .console
-            .as_ref()
-            .expect("Console not found!")
-            .send("Lua initialization failed!".to_string());
+    match crate::scripting::init(code, state) {
+        Ok(lua) => {
+            state.lua = lua;
+            state
+                .console
+                .as_ref()
+                .expect("Console not found!")
+                .send("Script loaded successfully!".to_string());
+        }
+
+        Err(e) => {
+            state
+                .console
+                .as_ref()
+                .expect("Console not found!")
+                .send(format!("Lua initialization failed: {:?}", e));
+            return;
+        }
     };
 
     state.world.home = Vector2i::new(BOARD_SIZE as i32 / 2, BOARD_SIZE as i32 / 2);

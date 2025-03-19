@@ -2,18 +2,6 @@ use piccolo::{Callback, Closure, Executor, Function, IntoMultiValue, IntoValue, 
 
 use crate::{LogicState, World};
 
-// const CODE: &str = "
-// i = 0
-// function update_player ()
-//     i = (i + 1) % 4
-
-//     if i == 0 then return 'down' end
-//     if i == 1 then return 'left' end
-//     if i == 2 then return 'up' end
-//     return 'right'
-// end
-// ";
-
 pub(crate) fn init(code: String, state: &LogicState) -> anyhow::Result<Lua> {
     let mut lua = Lua::core();
     let executor = lua.try_enter(|ctx| {

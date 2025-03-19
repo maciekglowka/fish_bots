@@ -27,7 +27,13 @@ pub(super) fn handle_player_turn(state: &mut crate::LogicState) {
                     None => (), // TODO log wait
                 }
             }
-            Err(e) => println!("{:?}", e),
+            Err(e) => {
+                state
+                    .console
+                    .as_ref()
+                    .expect("Console not found!")
+                    .send(format!("Runtime error: {:?}", e));
+            }
         }
     }
 }
